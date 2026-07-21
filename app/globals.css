@@ -110,6 +110,12 @@ body {
   width: 100%;
 }
 
+.nav-row {
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+}
+
 .nav-link {
   font-size: 0.9rem;
   color: inherit;
@@ -286,7 +292,8 @@ body {
   padding-top: 0.6rem;
 }
 
-.quick-actions-row button {
+.quick-actions-row button,
+.list-item-actions button {
   font-size: 0.95rem;
   padding: 0.6rem 1rem;
   border-radius: 10px;
@@ -302,13 +309,15 @@ body {
   color: inherit;
 }
 
-.quick-actions-row button:disabled {
+.quick-actions-row button:disabled,
+.list-item-actions button:disabled {
   opacity: 0.4;
   cursor: default;
 }
 
 @media (prefers-color-scheme: dark) {
-  .quick-actions-row button {
+  .quick-actions-row button,
+  .list-item-actions button {
     background: #f2f2f2;
     color: #111;
   }
@@ -353,4 +362,101 @@ body {
   .source-link {
     color: #82b1ff;
   }
+}
+
+/* Lists screen */
+
+.lists-tabs {
+  width: 100%;
+  max-width: 32rem;
+  margin: 0 auto;
+}
+
+.tab-row {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .tab-row {
+    border-bottom-color: #3a3a3c;
+  }
+}
+
+.tab-button {
+  flex: 1;
+  font-size: 0.95rem;
+  padding: 0.6rem 0.5rem;
+  border: none;
+  background: none;
+  color: inherit;
+  opacity: 0.55;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.tab-button.active {
+  opacity: 1;
+  border-bottom-color: #111;
+  font-weight: 600;
+}
+
+@media (prefers-color-scheme: dark) {
+  .tab-button.active {
+    border-bottom-color: #f2f2f2;
+  }
+}
+
+.list-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.list-item {
+  border-radius: 12px;
+  border: 1px solid #d0d0d0;
+  background: #fff;
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .list-item {
+    background: #1c1c1e;
+    border-color: #3a3a3c;
+  }
+}
+
+.list-item-main {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.list-item-content {
+  font-size: 1rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.list-item-meta {
+  font-size: 0.8rem;
+  opacity: 0.6;
+  white-space: nowrap;
+}
+
+.list-item-actions {
+  display: flex;
+  gap: 0.5rem;
 }

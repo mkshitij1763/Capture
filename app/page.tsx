@@ -6,9 +6,14 @@ export default function Home() {
     <main className="page">
       <div className="home-stack">
         <CaptureForm />
-        <Link href="/review" className="nav-link">
-          Review inbox
-        </Link>
+        <div className="nav-row">
+          <Link href="/review" className="nav-link">
+            Review inbox
+          </Link>
+          <Link href="/lists" className="nav-link">
+            Lists
+          </Link>
+        </div>
       </div>
     </main>
   );

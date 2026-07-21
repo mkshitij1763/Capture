@@ -35,9 +35,14 @@ export default async function ReviewPage() {
     <main className="page page-list">
       <header className="review-header">
         <h1>Inbox</h1>
-        <Link href="/" className="nav-link">
-          + New capture
-        </Link>
+        <div className="nav-row">
+          <Link href="/" className="nav-link">
+            + New capture
+          </Link>
+          <Link href="/lists" className="nav-link">
+            Lists
+          </Link>
+        </div>
       </header>
       <InboxList items={items} />
     </main>

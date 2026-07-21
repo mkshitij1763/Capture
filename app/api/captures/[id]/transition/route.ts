@@ -3,12 +3,13 @@ import { prisma } from "@/lib/prisma";
 import { CaptureType } from "@/generated/prisma/enums";
 import type { InputJsonValue } from "@prisma/client/runtime/client";
 
-const ACTIONS = ["schedule", "drop", "save", "archive", "bought"] as const;
+const ACTIONS = ["schedule", "drop", "done", "save", "archive", "bought"] as const;
 type Action = (typeof ACTIONS)[number];
 
 const ACTION_TYPE: Record<Action, CaptureType> = {
   schedule: CaptureType.task,
   drop: CaptureType.task,
+  done: CaptureType.task,
   save: CaptureType.reference,
   archive: CaptureType.thought,
   bought: CaptureType.shopping,
@@ -72,6 +73,15 @@ export async function POST(
         ...existingData,
         scheduled_date: (existingData.scheduled_date as string | null) ?? null,
         done_at: (existingData.done_at as string | null) ?? null,
+      };
+      break;
+    }
+    case "done": {
+      status = "done";
+      typeSpecificData = {
+        ...existingData,
+        scheduled_date: (existingData.scheduled_date as string | null) ?? null,
+        done_at: new Date().toISOString(),
       };
       break;
     }
