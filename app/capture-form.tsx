@@ -33,7 +33,7 @@ export function CaptureForm() {
   }
 
   return (
-    <form className="capture-form" onSubmit={handleSubmit}>
+    <form className="capture-form" onSubmit={handleSubmit} suppressHydrationWarning>
       <textarea
         ref={textareaRef}
         value={value}
@@ -44,6 +44,7 @@ export function CaptureForm() {
         placeholder="Capture anything..."
         autoFocus
         rows={4}
+        suppressHydrationWarning
       />
       <button type="submit" disabled={!value.trim()}>
         Send
