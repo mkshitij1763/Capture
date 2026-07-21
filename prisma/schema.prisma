@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum CaptureType {
+  task
+  reference
+  thought
+  shopping
+}
+
+enum HabitFrequency {
+  daily
+  weekly
+  custom
+}
+
+model Capture {
+  id               String       @id @default(cuid())
+  type             CaptureType?
+  content          String
+  tags             String[]     @default([])
+  status           String       @default("inbox")
+  typeSpecificData Json         @default("{}") @map("type_specific_data")
+  createdAt        DateTime     @default(now()) @map("created_at")
+  updatedAt        DateTime     @updatedAt @map("updated_at")
+
+  @@map("captures")
+}
+
+model Habit {
+  id        String         @id @default(cuid())
+  name      String
+  frequency HabitFrequency
+  createdAt DateTime       @default(now()) @map("created_at")
+  logs      HabitLog[]
+
+  @@map("habits")
+}
+
+model HabitLog {
+  id        String   @id @default(cuid())
+  habitId   String   @map("habit_id")
+  habit     Habit    @relation(fields: [habitId], references: [id])
+  date      DateTime @db.Date
+  completed Boolean  @default(false)
+
+  @@unique([habitId, date])
+  @@map("habit_logs")
+}
