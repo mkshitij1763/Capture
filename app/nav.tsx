@@ -7,6 +7,7 @@ const LINKS = [
   { href: "/", label: "Capture", icon: "add_circle" },
   { href: "/review", label: "Review", icon: "visibility" },
   { href: "/lists", label: "Lists", icon: "format_list_bulleted" },
+  { href: "/habits", label: "Habits", icon: "cached" },
 ] as const;
 
 function NavIcon({ name, filled }: { name: string; filled: boolean }) {

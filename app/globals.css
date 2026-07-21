@@ -892,3 +892,38 @@ a {
   border-color: var(--color-primary);
   color: var(--color-on-primary);
 }
+
+/* ---------------------------------------------------------------- */
+/* Habits screen                                                     */
+/* ---------------------------------------------------------------- */
+
+.add-habit-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+  padding: var(--space-lg);
+  background: var(--color-surface-container-lowest);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-1);
+}
+
+.habits-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+@media (min-width: 640px) {
+  .habits-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.habits-card {
+  align-items: flex-start;
+}
