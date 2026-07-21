@@ -134,7 +134,21 @@ a {
   color: inherit;
 }
 
+/* Self-hosted rather than linked from fonts.googleapis.com: an external
+   render-blocking stylesheet request is a real risk on a flaky mobile
+   network path even when it's fine on desktop's. */
+@font-face {
+  font-family: "Material Symbols Outlined";
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: swap;
+  src: url("/fonts/material-symbols-outlined.woff2") format("woff2");
+}
+
 .material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
   display: inline-block;
   line-height: 1;
@@ -142,6 +156,8 @@ a {
   letter-spacing: normal;
   white-space: nowrap;
   direction: ltr;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ---------------------------------------------------------------- */
@@ -149,6 +165,7 @@ a {
 /* ---------------------------------------------------------------- */
 
 .app-content {
+  min-height: 100vh;
   min-height: 100dvh;
   padding-bottom: calc(84px + env(safe-area-inset-bottom));
 }
@@ -468,6 +485,7 @@ a {
 /* ---------------------------------------------------------------- */
 
 .capture-page {
+  min-height: 100vh;
   min-height: 100dvh;
   display: flex;
   align-items: center;
@@ -484,10 +502,13 @@ a {
   opacity: 0.2;
 }
 
+/* Soft glow via radial-gradient rather than filter: blur() — large-radius
+   CSS blur is a known GPU-compositing stress point on mobile Safari (can
+   stall or blank the render); a gradient gets the same effect with none
+   of that risk. */
 .atmosphere-blob {
   position: absolute;
   border-radius: var(--radius-full);
-  filter: blur(120px);
 }
 
 .atmosphere-blob-a {
@@ -495,7 +516,7 @@ a {
   right: -10%;
   width: 24rem;
   height: 24rem;
-  background: var(--color-primary-fixed-dim);
+  background: radial-gradient(circle, var(--color-primary-fixed-dim) 0%, transparent 70%);
 }
 
 .atmosphere-blob-b {
@@ -503,8 +524,7 @@ a {
   left: -10%;
   width: 20rem;
   height: 20rem;
-  background: var(--color-secondary-container);
-  filter: blur(100px);
+  background: radial-gradient(circle, var(--color-secondary-container) 0%, transparent 70%);
 }
 
 .capture-shell {
