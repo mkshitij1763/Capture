@@ -96,3 +96,261 @@ body {
 .status-error {
   color: #c62828;
 }
+
+.home-stack {
+  width: 100%;
+  max-width: 32rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.home-stack .capture-form {
+  width: 100%;
+}
+
+.nav-link {
+  font-size: 0.9rem;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  opacity: 0.7;
+}
+
+/* Review/Inbox screen */
+
+.page-list {
+  align-items: stretch;
+  justify-content: flex-start;
+  padding-top: max(1.5rem, env(safe-area-inset-top));
+}
+
+.review-header {
+  width: 100%;
+  max-width: 32rem;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.review-header h1 {
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.empty-state {
+  width: 100%;
+  max-width: 32rem;
+  margin: 2rem auto 0;
+  text-align: center;
+  opacity: 0.6;
+  font-size: 1rem;
+}
+
+.inbox-list {
+  width: 100%;
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.inbox-item {
+  border-radius: 12px;
+  border: 1px solid #d0d0d0;
+  border-left-width: 4px;
+  background: #fff;
+  overflow: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+  .inbox-item {
+    background: #1c1c1e;
+    border-color: #3a3a3c;
+  }
+}
+
+.inbox-item.age-neutral {
+  border-left-color: #9aa0a6;
+}
+
+.inbox-item.age-amber {
+  border-left-color: #d99323;
+}
+
+.inbox-item.age-red {
+  border-left-color: #c62828;
+}
+
+.inbox-item-main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.9rem 1rem;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.inbox-item-content {
+  font-size: 1rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.inbox-item-meta {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.age-badge {
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: #eceff1;
+  color: #444;
+}
+
+.age-badge-amber {
+  background: #fdecc8;
+  color: #7a4e00;
+}
+
+.age-badge-red {
+  background: #fbdada;
+  color: #8f1d1d;
+}
+
+@media (prefers-color-scheme: dark) {
+  .age-badge {
+    background: #2c2c2e;
+    color: #ccc;
+  }
+
+  .age-badge-amber {
+    background: #4a3a12;
+    color: #ffd699;
+  }
+
+  .age-badge-red {
+    background: #4a1414;
+    color: #ffb3b3;
+  }
+}
+
+.type-badge {
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: none;
+  border: 1px solid #d0d0d0;
+  color: inherit;
+  opacity: 0.7;
+  text-transform: capitalize;
+}
+
+@media (prefers-color-scheme: dark) {
+  .type-badge {
+    border-color: #3a3a3c;
+  }
+}
+
+.quick-actions {
+  padding: 0 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .quick-actions {
+    border-top-color: #3a3a3c;
+  }
+}
+
+.quick-actions-row {
+  display: flex;
+  gap: 0.5rem;
+  padding-top: 0.6rem;
+}
+
+.quick-actions-row button {
+  font-size: 0.95rem;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  border: none;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+}
+
+.quick-actions-row button.secondary {
+  background: none;
+  border: 1px solid #c0c0c0;
+  color: inherit;
+}
+
+.quick-actions-row button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+@media (prefers-color-scheme: dark) {
+  .quick-actions-row button {
+    background: #f2f2f2;
+    color: #111;
+  }
+
+  .quick-actions-row button.secondary {
+    background: none;
+    border-color: #4a4a4c;
+    color: inherit;
+  }
+}
+
+.quick-actions-note {
+  margin: 0.6rem 0 0;
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+
+.date-input {
+  font-size: 0.95rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #d0d0d0;
+  font-family: inherit;
+}
+
+@media (prefers-color-scheme: dark) {
+  .date-input {
+    background: #1c1c1e;
+    border-color: #3a3a3c;
+    color: #f2f2f2;
+  }
+}
+
+.source-link {
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  color: #1565c0;
+  word-break: break-all;
+}
+
+@media (prefers-color-scheme: dark) {
+  .source-link {
+    color: #82b1ff;
+  }
+}
