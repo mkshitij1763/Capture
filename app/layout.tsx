@@ -12,12 +12,18 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Capture",
   description: "Capture anything, instantly.",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Capture",
+  },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  themeColor: "#182442",
 };
 
 export default function RootLayout({
