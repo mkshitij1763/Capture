@@ -32,19 +32,17 @@ export default async function ReviewPage() {
   }));
 
   return (
-    <main className="page page-list">
-      <header className="review-header">
-        <h1>Inbox</h1>
-        <div className="nav-row">
-          <Link href="/" className="nav-link">
-            + New capture
-          </Link>
-          <Link href="/lists" className="nav-link">
-            Lists
-          </Link>
-        </div>
-      </header>
+    <main className="shell-page">
+      <section className="shell-header">
+        <h1 className="shell-title">Review</h1>
+        <p className="shell-subtitle">Triage your thoughts into action.</p>
+      </section>
       <InboxList items={items} />
+      <Link href="/" className="fab" aria-label="New capture">
+        <span className="material-symbols-outlined" style={{ fontSize: 28 }} aria-hidden="true">
+          add_circle
+        </span>
+      </Link>
     </main>
   );
 }

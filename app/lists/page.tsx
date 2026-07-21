@@ -49,19 +49,16 @@ export default async function ListsPage() {
   }));
 
   return (
-    <main className="page page-list">
-      <header className="review-header">
-        <h1>Lists</h1>
-        <div className="nav-row">
-          <Link href="/" className="nav-link">
-            + New capture
-          </Link>
-          <Link href="/review" className="nav-link">
-            Review inbox
-          </Link>
-        </div>
-      </header>
+    <main className="shell-page">
+      <section className="shell-header">
+        <h1 className="shell-title">Your Lists</h1>
+      </section>
       <ListsTabs tasks={taskItems} references={referenceItems} shopping={shoppingItems} />
+      <Link href="/" className="fab" aria-label="New capture">
+        <span className="material-symbols-outlined" style={{ fontSize: 28 }} aria-hidden="true">
+          add
+        </span>
+      </Link>
     </main>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 
 type Status = "idle" | "saved" | "error";
 
@@ -8,6 +8,13 @@ export function CaptureForm() {
   const [value, setValue] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+    textarea.style.height = "auto";
+    textarea.style.height = `${textarea.scrollHeight}px`;
+  }, [value]);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -36,6 +43,7 @@ export function CaptureForm() {
     <form className="capture-form" onSubmit={handleSubmit} suppressHydrationWarning>
       <textarea
         ref={textareaRef}
+        className="capture-textarea"
         value={value}
         onChange={(event) => {
           setValue(event.target.value);
@@ -46,19 +54,24 @@ export function CaptureForm() {
         rows={4}
         suppressHydrationWarning
       />
-      <button type="submit" disabled={!value.trim()}>
-        Send
-      </button>
-      {status === "saved" && (
-        <p className="status status-saved" role="status">
-          Saved
-        </p>
-      )}
-      {status === "error" && (
-        <p className="status status-error" role="status">
-          Couldn&apos;t save — try again
-        </p>
-      )}
+      <div className="capture-action-row">
+        <button type="submit" className="btn-primary" disabled={!value.trim()}>
+          <span>Capture</span>
+          <span className="material-symbols-outlined" aria-hidden="true">
+            arrow_forward
+          </span>
+        </button>
+      </div>
+      <p
+        className={status === "error" ? "capture-tagline capture-tagline-error" : "capture-tagline"}
+        role="status"
+      >
+        {status === "saved"
+          ? "Saved."
+          : status === "error"
+            ? "Couldn't save — try again"
+            : "Your thoughts, safely stored."}
+      </p>
     </form>
   );
 }

@@ -1,19 +1,14 @@
-import Link from "next/link";
 import { CaptureForm } from "./capture-form";
 
 export default function Home() {
   return (
-    <main className="page">
-      <div className="home-stack">
+    <main className="capture-page">
+      <div className="atmosphere" aria-hidden="true">
+        <div className="atmosphere-blob atmosphere-blob-a" />
+        <div className="atmosphere-blob atmosphere-blob-b" />
+      </div>
+      <div className="capture-shell">
         <CaptureForm />
-        <div className="nav-row">
-          <Link href="/review" className="nav-link">
-            Review inbox
-          </Link>
-          <Link href="/lists" className="nav-link">
-            Lists
-          </Link>
-        </div>
       </div>
     </main>
   );

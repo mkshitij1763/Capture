@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 type CaptureTypeName = "task" | "reference" | "thought" | "shopping";
+type AgeBucket = "neutral" | "amber" | "red";
 
 export type InboxItem = {
   id: string;
@@ -11,15 +12,22 @@ export type InboxItem = {
   tags: string[];
   typeSpecificData: Record<string, unknown>;
   createdAt: string;
-  ageBucket: "neutral" | "amber" | "red";
+  ageBucket: AgeBucket;
+};
+
+const AGE_ICON: Record<AgeBucket, string> = {
+  neutral: "schedule",
+  amber: "history",
+  red: "warning",
 };
 
 function formatAge(createdAt: string): string {
   const ms = Date.now() - new Date(createdAt).getTime();
-  const days = Math.floor(ms / (24 * 60 * 60 * 1000));
-  if (days <= 0) return "today";
-  if (days === 1) return "1 day ago";
-  return `${days} days ago`;
+  const hours = Math.floor(ms / (60 * 60 * 1000));
+  const days = Math.floor(hours / 24);
+  if (hours < 1) return "Added just now";
+  if (days < 1) return `Added ${hours} hour${hours === 1 ? "" : "s"} ago`;
+  return `${days} day${days === 1 ? "" : "s"} old`;
 }
 
 export function InboxList({ items: initialItems }: { items: InboxItem[] }) {
@@ -57,11 +65,16 @@ export function InboxList({ items: initialItems }: { items: InboxItem[] }) {
   }
 
   if (items.length === 0) {
-    return <p className="empty-state">Inbox is empty. Nice.</p>;
+    return (
+      <section className="empty-state">
+        <h3 className="empty-state-title">Mind like water</h3>
+        <p className="empty-state-copy">Your inbox is clear. Take a moment to enjoy the stillness.</p>
+      </section>
+    );
   }
 
   return (
-    <ul className="inbox-list">
+    <ul className="review-list">
       {items.map((item) => {
         const expanded = expandedId === item.id;
         const pending = pendingId === item.id;
@@ -71,19 +84,25 @@ export function InboxList({ items: initialItems }: { items: InboxItem[] }) {
             : null;
 
         return (
-          <li key={item.id} className={`inbox-item age-${item.ageBucket}`}>
+          <li key={item.id} className={`review-card review-card-${item.ageBucket}`}>
             <button
               type="button"
-              className="inbox-item-main"
+              className="review-card-main"
               onClick={() => toggleExpanded(item.id)}
               aria-expanded={expanded}
             >
-              <span className="inbox-item-content">{item.content}</span>
-              <span className="inbox-item-meta">
-                <span className={`age-badge age-badge-${item.ageBucket}`}>
-                  {formatAge(item.createdAt)}
-                </span>
-                <span className="type-badge">{item.type ?? "tagging…"}</span>
+              <div className="review-card-text">
+                <h3 className="review-card-content">{item.content}</h3>
+                <div className={`review-card-age review-card-age-${item.ageBucket}`}>
+                  <span className="material-symbols-outlined" style={{ fontSize: 14 }} aria-hidden="true">
+                    {AGE_ICON[item.ageBucket]}
+                  </span>
+                  <span>{formatAge(item.createdAt)}</span>
+                  {item.type && <span className="chip">{item.type}</span>}
+                </div>
+              </div>
+              <span className="material-symbols-outlined review-card-chevron" aria-hidden="true">
+                {expanded ? "expand_less" : "expand_more"}
               </span>
             </button>
 
@@ -91,7 +110,10 @@ export function InboxList({ items: initialItems }: { items: InboxItem[] }) {
               <div className="quick-actions">
                 {sourceUrl && (
                   <a href={sourceUrl} target="_blank" rel="noreferrer" className="source-link">
-                    {sourceUrl}
+                    <span className="material-symbols-outlined" style={{ fontSize: 16 }} aria-hidden="true">
+                      open_in_new
+                    </span>
+                    <span>{sourceUrl}</span>
                   </a>
                 )}
 
@@ -110,6 +132,7 @@ export function InboxList({ items: initialItems }: { items: InboxItem[] }) {
                       />
                       <button
                         type="button"
+                        className="btn-primary"
                         disabled={!scheduledDate || pending}
                         onClick={() => runAction(item.id, "schedule", { scheduledDate })}
                       >
@@ -120,20 +143,27 @@ export function InboxList({ items: initialItems }: { items: InboxItem[] }) {
                     <div className="quick-actions-row">
                       <button
                         type="button"
+                        className="btn-primary"
                         disabled={pending}
                         onClick={() => {
                           setSchedulingId(item.id);
                           setScheduledDate(new Date().toISOString().slice(0, 10));
                         }}
                       >
+                        <span className="material-symbols-outlined" style={{ fontSize: 18 }} aria-hidden="true">
+                          calendar_today
+                        </span>
                         Schedule
                       </button>
                       <button
                         type="button"
-                        className="secondary"
+                        className="btn-ghost"
                         disabled={pending}
                         onClick={() => runAction(item.id, "drop")}
                       >
+                        <span className="material-symbols-outlined" style={{ fontSize: 18 }} aria-hidden="true">
+                          delete_sweep
+                        </span>
                         Drop
                       </button>
                     </div>
@@ -141,7 +171,15 @@ export function InboxList({ items: initialItems }: { items: InboxItem[] }) {
 
                 {item.type === "reference" && (
                   <div className="quick-actions-row">
-                    <button type="button" disabled={pending} onClick={() => runAction(item.id, "save")}>
+                    <button
+                      type="button"
+                      className="btn-primary"
+                      disabled={pending}
+                      onClick={() => runAction(item.id, "save")}
+                    >
+                      <span className="material-symbols-outlined" style={{ fontSize: 18 }} aria-hidden="true">
+                        bookmark_added
+                      </span>
                       Save
                     </button>
                   </div>
@@ -149,7 +187,15 @@ export function InboxList({ items: initialItems }: { items: InboxItem[] }) {
 
                 {item.type === "thought" && (
                   <div className="quick-actions-row">
-                    <button type="button" disabled={pending} onClick={() => runAction(item.id, "archive")}>
+                    <button
+                      type="button"
+                      className="btn-primary"
+                      disabled={pending}
+                      onClick={() => runAction(item.id, "archive")}
+                    >
+                      <span className="material-symbols-outlined" style={{ fontSize: 18 }} aria-hidden="true">
+                        archive
+                      </span>
                       Archive
                     </button>
                   </div>
@@ -157,7 +203,15 @@ export function InboxList({ items: initialItems }: { items: InboxItem[] }) {
 
                 {item.type === "shopping" && (
                   <div className="quick-actions-row">
-                    <button type="button" disabled={pending} onClick={() => runAction(item.id, "bought")}>
+                    <button
+                      type="button"
+                      className="btn-primary"
+                      disabled={pending}
+                      onClick={() => runAction(item.id, "bought")}
+                    >
+                      <span className="material-symbols-outlined" style={{ fontSize: 18 }} aria-hidden="true">
+                        shopping_bag
+                      </span>
                       Mark bought
                     </button>
                   </div>
