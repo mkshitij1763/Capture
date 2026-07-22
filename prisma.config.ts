@@ -9,6 +9,11 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    // CLI-only (migrate/validate/studio). The app's runtime PrismaClient
+    // (lib/prisma.ts) uses its own PrismaPg adapter pointed at
+    // DATABASE_URL (pooled) independently of this file — Prisma 7 removed
+    // datasource.directUrl, and migrations need the non-pooled connection
+    // since Supabase's pgbouncer can't run DDL/advisory-lock operations.
+    url: process.env["DIRECT_URL"],
   },
 });
