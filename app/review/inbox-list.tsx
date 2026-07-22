@@ -98,6 +98,7 @@ export function InboxList({ items: initialItems }: { items: InboxItem[] }) {
                     {AGE_ICON[item.ageBucket]}
                   </span>
                   <span>{formatAge(item.createdAt)}</span>
+                  {item.type && <span className="chip">{item.type}</span>}
                 </div>
               </div>
               <span className="material-symbols-outlined review-card-chevron" aria-hidden="true">
