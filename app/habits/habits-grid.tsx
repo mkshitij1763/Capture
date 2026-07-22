@@ -12,9 +12,10 @@ export type HabitItem = {
   streak: number;
 };
 
-async function markDone(id: string) {
+async function toggleDone(id: string): Promise<{ doneToday: boolean; streak: number }> {
   const res = await fetch(`/api/habits/${id}/complete`, { method: "POST" });
-  if (!res.ok) throw new Error("mark done failed");
+  if (!res.ok) throw new Error("toggle done failed");
+  return res.json();
 }
 
 async function createHabit(name: string, frequency: Frequency) {
@@ -38,16 +39,16 @@ export function HabitsGrid({ items: initialItems }: { items: HabitItem[] }) {
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState(false);
 
-  async function handleMarkDone(id: string) {
+  async function handleToggleDone(id: string) {
     setPendingId(id);
     setErrorId(null);
     try {
-      await markDone(id);
-      // Only flip doneToday optimistically — the streak count is left as
-      // server-computed until the next load rather than guessing a new
-      // value that could come out wrong (e.g. if yesterday had a gap).
+      const { doneToday, streak } = await toggleDone(id);
+      // Both values come straight from the server's recomputed streak —
+      // no client-side guessing, so un-marking today correctly drops the
+      // count back down and re-marking brings it back up.
       setItems((current) =>
-        current.map((item) => (item.id === id ? { ...item, doneToday: true } : item))
+        current.map((item) => (item.id === id ? { ...item, doneToday, streak } : item))
       );
     } catch {
       setErrorId(id);
@@ -122,9 +123,11 @@ export function HabitsGrid({ items: initialItems }: { items: HabitItem[] }) {
                 <button
                   type="button"
                   className={item.doneToday ? "check-toggle check-toggle-done" : "check-toggle"}
-                  disabled={pending || item.doneToday}
-                  onClick={() => handleMarkDone(item.id)}
-                  aria-label={`Mark ${item.name} done for today`}
+                  disabled={pending}
+                  onClick={() => handleToggleDone(item.id)}
+                  aria-label={
+                    item.doneToday ? `Un-mark ${item.name} for today` : `Mark ${item.name} done for today`
+                  }
                 >
                   <span className="material-symbols-outlined" style={{ fontSize: 20 }} aria-hidden="true">
                     check

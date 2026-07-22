@@ -1,30 +1,9 @@
 import { prisma } from "@/lib/prisma";
+import { todayAsDate, ymd, computeStreak } from "@/lib/habit-streak";
 import { HabitsGrid, type HabitItem } from "./habits-grid";
 
 // Live data (today's completion state) — never prerender/cache at build time.
 export const dynamic = "force-dynamic";
-
-function todayAsDate(): Date {
-  const now = new Date();
-  return new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
-}
-
-function ymd(date: Date): string {
-  return date.toISOString().slice(0, 10);
-}
-
-function computeStreak(completedDates: Set<string>): number {
-  let cursor = todayAsDate();
-  if (!completedDates.has(ymd(cursor))) {
-    cursor = new Date(cursor.getTime() - 24 * 60 * 60 * 1000);
-  }
-  let streak = 0;
-  while (completedDates.has(ymd(cursor))) {
-    streak += 1;
-    cursor = new Date(cursor.getTime() - 24 * 60 * 60 * 1000);
-  }
-  return streak;
-}
 
 export default async function HabitsPage() {
   const habits = await prisma.habit.findMany({
